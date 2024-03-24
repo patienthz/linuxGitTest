@@ -1,10 +1,9 @@
-hello,world
-this is a text file!!!
-first fix the file!!!
-second fix the file!!!
+Hello!!!
 
-first firstbranch fix!!!
-firstbranch to master merge!!!
-fix the file in firstbranch!!!
+This is a test project in **linux/ubuntu** among with *C,C++,Python,etc*
 
-github fix
+* Python come from [CS50’s Introduction to Programming with Python](https://cs50.harvard.edu/python/2022/), it just some practice.
+* C 
+* C++
+
+
