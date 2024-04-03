@@ -1,18 +1,24 @@
-#include <iostream>
-
-#define length 10
+#include<iostream>
+#include<cstring>
 
 using namespace std;
+// namespace name
+int main()
+{
+    string str1="RJSFVJS";
+    string str2="Google";
+    string str3;
+    int len;
 
-class myclass{
-    public:
-    static int Classvar;
-};
-int myclass::Classvar=30;
-string green="kafdjijksfjk";
-string green1="folskof";
+    str3=str1;
+    cout<<"str3:"<<str3<<endl;
 
-int main(){
-    cout<<"var:"<<myclass::Classvar<<length<<endl;
-    return 0;
+    str3=str1+str2;
+    cout<<"str1+str2:"<<str3<<endl;
+
+    len=str3.size();
+    cout<<"the len of str3:"<<len<<endl;
+
+
 }
+
