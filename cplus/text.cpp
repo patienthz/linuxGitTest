@@ -1,74 +1,49 @@
+#include <fstream>
 #include <iostream>
 using namespace std;
  
-class Box
+int main ()
 {
-   public:
+    
+   char data[100];
  
-      double getVolume(void)
-      {
-         return length * breadth * height;
-      }
-      void setLength( double len )
-      {
-          length = len;
-      }
+   // 以写模式打开文件
+   ofstream outfile;
+   outfile.open("afile.dat");
  
-      void setBreadth( double bre )
-      {
-          breadth = bre;
-      }
+   cout << "Writing to the file" << endl;
+   cout << "Enter your name: "; 
+   cin.getline(data, 100);
  
-      void setHeight( double hei )
-      {
-          height = hei;
-      }
-      // 重载 + 运算符，用于把两个 Box 对象相加
-      Box operator+(const Box& b)
-      {
-         Box box;
-         box.length = this->length + b.length;
-         box.breadth = this->breadth + b.breadth;
-         box.height = this->height + b.height;
-         return box;
-      }
-   private:
-      double length;      // 长度
-      double breadth;     // 宽度
-      double height;      // 高度
-};
-// 程序的主函数
-int main( )
-{
-   Box Box1;                // 声明 Box1，类型为 Box
-   Box Box2;                // 声明 Box2，类型为 Box
-   Box Box3;                // 声明 Box3，类型为 Box
-   double volume = 0.0;     // 把体积存储在该变量中
+   // 向文件写入用户输入的数据
+   outfile << data << endl;
  
-   // Box1 详述
-   Box1.setLength(6.0); 
-   Box1.setBreadth(7.0); 
-   Box1.setHeight(5.0);
+   cout << "Enter your age: "; 
+   cin >> data;
+   cin.ignore();
+   
+   // 再次向文件写入用户输入的数据
+   outfile << data << endl;
  
-   // Box2 详述
-   Box2.setLength(12.0); 
-   Box2.setBreadth(13.0); 
-   Box2.setHeight(10.0);
+   // 关闭打开的文件
+   outfile.close();
  
-   // Box1 的体积
-   volume = Box1.getVolume();
-   cout << "Volume of Box1 : " << volume <<endl;
+   // 以读模式打开文件
+   ifstream infile; 
+   infile.open("afile.dat"); 
  
-   // Box2 的体积
-   volume = Box2.getVolume();
-   cout << "Volume of Box2 : " << volume <<endl;
+   cout << "Reading from the file" << endl; 
+   infile >> data; 
  
-   // 把两个对象相加，得到 Box3
-   Box3 = Box1 + Box2;
+   // 在屏幕上写入数据
+   cout << data << endl;
+   
+   // 再次从文件读取数据，并显示它
+   infile >> data; 
+   cout << data << endl; 
  
-   // Box3 的体积
-   volume = Box3.getVolume();
-   cout << "Volume of Box3 : " << volume <<endl;
+   // 关闭打开的文件
+   infile.close();
  
    return 0;
 }
