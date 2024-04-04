@@ -1,5 +1,6 @@
 //dp
 #include <iostream>
+
 class Solution {
 public:
     int climbStairs(int n) {
@@ -21,3 +22,11 @@ public:
     }
 };
 
+int main(){
+    int temp,n;
+    std::cout<<"输入要爬的楼梯数"<<std::endl;
+    std::cin>>n;
+    Solution sol;
+    temp=sol.climbStairs(n);
+    std::cout<<"一共有"<<temp<<"种方法"<<std::endl;
+}
