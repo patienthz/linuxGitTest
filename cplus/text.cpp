@@ -1,45 +1,74 @@
 #include <iostream>
- 
 using namespace std;
-
+ 
 class Box
 {
    public:
-      // 构造函数定义
-      Box(double l=2.0, double b=2.0, double h=2.0)
-      {
-         cout <<"Constructor called." << endl;
-         length = l;
-         breadth = b;
-         height = h;
-      }
-      double Volume()
+ 
+      double getVolume(void)
       {
          return length * breadth * height;
       }
+      void setLength( double len )
+      {
+          length = len;
+      }
+ 
+      void setBreadth( double bre )
+      {
+          breadth = bre;
+      }
+ 
+      void setHeight( double hei )
+      {
+          height = hei;
+      }
+      // 重载 + 运算符，用于把两个 Box 对象相加
+      Box operator+(const Box& b)
+      {
+         Box box;
+         box.length = this->length + b.length;
+         box.breadth = this->breadth + b.breadth;
+         box.height = this->height + b.height;
+         return box;
+      }
    private:
-      double length;     // Length of a box
-      double breadth;    // Breadth of a box
-      double height;     // Height of a box
+      double length;      // 长度
+      double breadth;     // 宽度
+      double height;      // 高度
 };
-
-int main(void)
+// 程序的主函数
+int main( )
 {
-   Box Box1(3.3, 1.2, 1.5);    // Declare box1
-   Box Box2(8.5, 6.0, 2.0);    // Declare box2
-   Box *ptrBox;                // Declare pointer to a class.
-
-   // 保存第一个对象的地址
-   ptrBox = &Box1;
-
-   // 现在尝试使用成员访问运算符来访问成员
-   cout << "Volume of Box1: " << ptrBox->Volume() << endl;
-
-   // 保存第二个对象的地址
-   ptrBox = &Box2;
-
-   // 现在尝试使用成员访问运算符来访问成员
-   cout << "Volume of Box2: " << ptrBox->Volume() << endl;
+   Box Box1;                // 声明 Box1，类型为 Box
+   Box Box2;                // 声明 Box2，类型为 Box
+   Box Box3;                // 声明 Box3，类型为 Box
+   double volume = 0.0;     // 把体积存储在该变量中
+ 
+   // Box1 详述
+   Box1.setLength(6.0); 
+   Box1.setBreadth(7.0); 
+   Box1.setHeight(5.0);
+ 
+   // Box2 详述
+   Box2.setLength(12.0); 
+   Box2.setBreadth(13.0); 
+   Box2.setHeight(10.0);
+ 
+   // Box1 的体积
+   volume = Box1.getVolume();
+   cout << "Volume of Box1 : " << volume <<endl;
+ 
+   // Box2 的体积
+   volume = Box2.getVolume();
+   cout << "Volume of Box2 : " << volume <<endl;
+ 
+   // 把两个对象相加，得到 Box3
+   Box3 = Box1 + Box2;
+ 
+   // Box3 的体积
+   volume = Box3.getVolume();
+   cout << "Volume of Box3 : " << volume <<endl;
  
    return 0;
 }
