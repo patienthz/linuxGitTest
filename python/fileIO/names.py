@@ -1,3 +1,4 @@
+
 names = []
 
 with open("names.txt") as file:
@@ -6,4 +7,5 @@ with open("names.txt") as file:
 
 for name in sorted(names):
     print(f"hello, {name}")
+
 
