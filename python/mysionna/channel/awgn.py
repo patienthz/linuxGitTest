@@ -6,3 +6,4 @@ class AWGN():
     def text(x):
         x=17
         print(x)
+
