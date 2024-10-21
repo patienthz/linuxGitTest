@@ -30,3 +30,4 @@ int main(){
     temp=sol.climbStairs(n);
     std::cout<<"一共有"<<temp<<"种方法"<<std::endl;
 }
+
