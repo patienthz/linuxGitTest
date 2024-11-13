@@ -1,17 +1,25 @@
 package student_system;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class StudentSystem {
     public static void main(String[] args) {
 
-        boolean exitFlag = false;
+        //全局变量
         ArrayList<Student> students = new ArrayList<>();
+        ArrayList<User> users = new ArrayList<>();
+
+        if (LoginStudentSystem(users)) {
+            MannageStudentSystem(students);
+        }
+
+    }
+
+    //管理学生系统
+    public static void MannageStudentSystem(ArrayList<Student> students) {
         while (true) {
-            if (exitFlag) {
-                break;
-            }
             //init
             System.out.println("-------------欢迎来到学生管理系统----------------");
             System.out.println("1：添加学生");
@@ -39,8 +47,8 @@ public class StudentSystem {
                     break;
                 case "5":
                     System.out.println("退出");
-                    exitFlag = true;
-                    //System.exit(0);
+                    //exitFlag = true;
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("error");
@@ -48,7 +56,6 @@ public class StudentSystem {
             }
         }
     }
-
 
     //添加学生
     public static void addStudent(ArrayList<Student> students) {
@@ -178,12 +185,59 @@ public class StudentSystem {
         }
     }
 
+    //登录系统
+    public static boolean LoginStudentSystem(ArrayList<User> users) {
+
+        boolean exitFlag = false;
+
+        while (!exitFlag) {
+
+            //Init
+            System.out.println("-------------请选择您的操作----------------");
+            System.out.println("1：注册新用户");
+            System.out.println("2：登录");
+            System.out.println("3：修改密码");
+            System.out.println("请输入选择：");
+
+            //输入
+            Scanner scanner = new Scanner(System.in);
+            String choice = scanner.next();
+            switch (choice) {
+                case "1":
+                    if (signIn(users)) {
+                        System.out.println("请登录后进入学生管理系统");
+                    }
+                    break;
+                case "2":
+                    if (Login(users)) {
+                        exitFlag = true;
+                        return true;
+                    }
+                    break;
+                case "3":
+                    if (FixPassword(users)) {
+                        System.out.println("请登录后进入学生管理系统");
+                    }
+                    break;
+                default:
+                    System.out.println("error");
+                    break;
+            }
+
+        }
+
+        return false;
+    }
+
     //注册功能
-    public static boolean signIn(User user) {
+    public static boolean signIn(ArrayList<User> users) {
 
         //Init
         System.out.println("欢迎注册学生管理系统----------------------------");
         Scanner scanner = new Scanner(System.in);
+
+        //新建一个user
+        User user = new User();
 
         //username
         System.out.println("请输入注册用户名");
@@ -212,16 +266,189 @@ public class StudentSystem {
         String phone = scanner.next();
         user.setPhone(phone);
 
-        System.out.println(user.getUsername()+"用户注册成功！");
+        //添加user到users中
+        users.add(user);
+        System.out.println(user.getUsername() + "用户注册成功！");
         return true;
     }
 
     //登录功能
-    public static boolean Login(User user) {
+    public static boolean Login(ArrayList<User> users) {
 
+        //登录成功标志
+        boolean flagLogin = false;
 
+        //Init
+        System.out.println("欢迎登录学生管理系统----------------------------");
+        Scanner scanner = new Scanner(System.in);
 
-        return true;
+        //录入用户名
+        System.out.println("请输入用户名");
+        String username = scanner.next();
+
+        //查找用户名
+        if (!IsSearchUsername(users, username)) {
+            System.out.println("用户名未注册，请先注册");
+            return false;
+        }
+
+        //录入密码
+        System.out.println("请输入密码");
+        String password = scanner.next();
+
+        //录入验证码
+        while (true) {
+            String rmCode = generateVerificationCode();
+            System.out.println("请输入验证码:" + rmCode);
+            String inputCode = scanner.next();
+            if (inputCode.equals(rmCode)) {
+                break;
+            } else {
+                System.out.println("error!please input again");
+            }
+        }
+
+        //判断用户名和密码是否匹配
+        for (int i = 0; i < 3; i++) {
+            if (IsMatchPassword(users, username, password)) {
+                System.out.println(username + "，您已成功登录学生管理系统");
+                flagLogin = true;
+                break;
+            } else {
+                System.out.println("用户名或密码错误，请重新输入，您还有" + (2 - i) + "次机会");
+            }
+        }
+
+        return flagLogin;
     }
 
+    //修改密码功能
+    public static boolean FixPassword(ArrayList<User> users) {
+
+        //Init
+        System.out.println("欢迎修改密码，请输入用户名：");
+        Scanner scanner = new Scanner(System.in);
+
+        //判断用户是否存在
+        String username = scanner.next();
+        if (!IsSearchUsername(users, username)) {
+            System.out.println("您的用户名有误或未能注册");
+            return false;
+        }
+
+        //录入身份证号码是否一致
+        System.out.println("请输入身份证号");
+        String id = scanner.next();
+        if (!IsMatchId(users, username, id)) {
+            System.out.println("您的用户名和身份证号码不匹配，修改密码失败");
+            return false;
+        }
+
+        //录入手机号码是否一致
+        System.out.println("请输入身份证号");
+        String phoneNumber = scanner.next();
+        if (!IsMatchPhone(users, username, phoneNumber)) {
+            System.out.println("您的用户名和手机号码不匹配，修改密码失败");
+            return false;
+        }
+
+        //修改密码
+        System.out.println("请输入您的新密码");
+        String newPassword = scanner.next();
+        if (IsFixPassword(users, username, newPassword)) {
+            System.out.println("恭喜您成功修改密码，您的新密码是：" + newPassword);
+            return true;
+        }
+
+        return false;
+    }
+
+
+    //username是否存在
+    public static boolean IsSearchUsername(ArrayList<User> users, String username) {
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //随机生成验证码
+    public static String generateVerificationCode() {
+        String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        String digits = "0123456789";
+        StringBuilder code = new StringBuilder(5);
+        Random random = new Random();
+
+        // 随机生成4个字母（大写或小写）
+        for (int i = 0; i < 4; i++) {
+            int index = random.nextInt(letters.length());
+            code.append(letters.charAt(index));
+        }
+
+        // 随机生成1个数字
+        int digitIndex = random.nextInt(digits.length());
+        char digit = digits.charAt(digitIndex);
+
+        // 随机插入数字到字符串的任意位置
+        int insertPosition = random.nextInt(5);
+        code.insert(insertPosition, digit);
+
+        return code.toString();
+    }
+
+    //判断用户名和密码是否匹配
+    public static boolean IsMatchPassword(ArrayList<User> users, String username, String password) {
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                if (user.getPassword().equals(password)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    //判断用户名和身份证是否匹配
+    public static boolean IsMatchId(ArrayList<User> users, String username, String id) {
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                if (user.getId().equals(id)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    //判断用户名和手机号码是否匹配
+    public static boolean IsMatchPhone(ArrayList<User> users, String username, String phone) {
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                if (user.getPhone().equals(phone)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    //判断密码是否修改成功
+    public static boolean IsFixPassword(ArrayList<User> users, String username, String newPassword) {
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                user.setPassword(newPassword);
+                return true;
+            }
+        }
+        return false;
+    }
 }

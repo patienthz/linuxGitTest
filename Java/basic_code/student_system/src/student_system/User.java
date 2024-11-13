@@ -126,7 +126,7 @@ public class User {
             if (userId.charAt(0) == '0') {
                 return false;
             }
-            if (userId.charAt(userId.length()) == 'X' || userId.charAt(userId.length()) == 'x' || Character.isDigit(userId.charAt(userId.length()))) {
+            if (userId.charAt(userId.length()-1) == 'X' || userId.charAt(userId.length()-1) == 'x' || Character.isDigit(userId.charAt(userId.length()-1))) {
 
             } else {
                 return false;
