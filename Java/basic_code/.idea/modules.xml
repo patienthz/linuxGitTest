@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/day13_code/day13_code.iml" filepath="$PROJECT_DIR$/day13_code/day13_code.iml" />
       <module fileurl="file://$PROJECT_DIR$/day15_code/day15_code.iml" filepath="$PROJECT_DIR$/day15_code/day15_code.iml" />
+      <module fileurl="file://$PROJECT_DIR$/day15_code/oop-innerclass/oop-innerclass.iml" filepath="$PROJECT_DIR$/day15_code/oop-innerclass/oop-innerclass.iml" />
+      <module fileurl="file://$PROJECT_DIR$/puzzlegame/puzzlegame.iml" filepath="$PROJECT_DIR$/puzzlegame/puzzlegame.iml" />
       <module fileurl="file://$PROJECT_DIR$/student_system/student_system.iml" filepath="$PROJECT_DIR$/student_system/student_system.iml" />
     </modules>
   </component>
